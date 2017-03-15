@@ -1,20 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   SiteNumber.h
- * Author: Egor
- *
- * Created on 15 марта 2017 г., 9:26
- */
 
 #ifndef SITENUMBER_H
 #define SITENUMBER_H
 
+#include "Runway.h"
 
+class SiteNumber
+{
+public:
+
+    SiteNumber(const std::string number, const int& lenght) 
+    : site_number_(number), min_runway_lenght(lenght)
+    {
+    }
+    
+    ~SiteNumber()
+    {
+    }
+
+    bool operator()(const Runway* obj)
+    {
+        if(site_number_.compare(obj->site_number()) != 0)
+            return false;
+        return obj->length() >= min_runway_lenght;
+    }
+private:
+    const std::string site_number_;
+    const int min_runway_lenght;
+};
 
 #endif /* SITENUMBER_H */
 

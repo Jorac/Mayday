@@ -87,20 +87,10 @@ int main(int argc, char **argv)
     // Find all runways of this facility that are long enough
     vector<Runway*> good_runways;
     // Insert your code here
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    vector<Runway*>::iterator iter = find_if(runways.begin(), runways.end(), SiteNumber(a->site_number(), min_runway_length));
+    if(iter!=runways.end()){
+        good_runways.push_back(*iter);
+    }
     // print this facility if it has long enough runways
     if ( !good_runways.empty() )
     {
