@@ -5,52 +5,71 @@
  */
 
 #include "Facility.h"
+#include "gcdistance.h"
+#include <sstream>
 
-Facility::Facility(std::string s):
-latitude_(0.0),longitude_(0.0)
+Facility::Facility(std::string s)
+    :   site_number_(s.substr(0, 10)),
+        type_(s.substr(11,12)),
+        code_(s.substr(24,3)),
+        name_(s.substr(130, 49)),
+        latitude_(convert_latitude(s.substr(535,12))),
+        longitude_(convert_longitude(s.substr(562,12)))
 {
 }
 
 double Facility::convert_latitude(std::string s) const
 {
-    return 0.0;
+    std::stringstream ss(s);
+    double res = 0.0;
+    ss >> res;
+    res/=3600;
+    if(s.at(s.length()-1) == 'S')
+        res*=(-1);
+    return res;
 }
 
 double Facility::convert_longitude(std::string s) const
 {
-    return 0.0;
+    std::stringstream ss(s);
+    double res = 0.0;
+    ss >> res;
+    res/=3600;
+    if(s.at(s.length()-1) == 'W')
+        res*=(-1);
+    return res;
 }
 
 double Facility::distance(double lat, double lon) const
 {
-    return 0.0;
+    return gcdistance(latitude_,longitude_,lat, lon);
 }
 
 std::string Facility::code() const{
-    return "";
+    return code_;
 }
 
 double Facility::latitude() const
 {
-    return 0.0;
+    return latitude_;
 }
 
 double Facility::longitude() const
 {
-    return 0.0;
+    return longitude_;
 }
 
 std::string Facility::name() const
 {
-    return "";
+    return name_;
 }
 
 std::string Facility::site_number() const
 {
-    return "";
+    return site_number_;
 }
 
 std::string Facility::type() const
 {
-    return "";
+    return type_;
 }
