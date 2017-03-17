@@ -8,12 +8,12 @@
 class Runway
 {
   public:
-    Runway(std::string s):length_(0.0){}
-    std::string site_number(void) const{return "";}
-    std::string name(void) const{return "";}
-    int length(void) const{return 0;}
+    Runway(std::string s);
+    std::string site_number(void) const;
+    std::string name(void) const;
+    int length(void) const;
   private:
-    int convert_length(std::string s) const{return 0;}
+    int convert_length(std::string s) const;
     const std::string site_number_;
     const std::string name_;
     const int length_;

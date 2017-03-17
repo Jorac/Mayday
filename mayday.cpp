@@ -39,7 +39,7 @@ int main(int argc, char **argv)
   const double current_latitude = atof(argv[1]);
   const double current_longitude = atof(argv[2]);
   const int min_runway_length = atoi(argv[3]);
-
+  
   vector<Facility*> facilities;
   // load facilities data
   // Insert your code here
@@ -49,6 +49,10 @@ int main(int argc, char **argv)
       string tmp;
       while(fclStream.good() && !fclStream.eof()){
         getline(fclStream, tmp);
+        // stores only big enough strings
+        if(tmp.length() < 574){
+            continue;
+        }
         Facility* fcl = new Facility(tmp);
         facilities.push_back(fcl);
       }
@@ -63,12 +67,15 @@ int main(int argc, char **argv)
   vector<Runway*> runways;
   // load runways data
   // Insert your code here
-
-  fstream rnwStream("Runway.txt", ios_base::in);
+  fstream rnwStream("Runways.txt", ios_base::in);
   if(rnwStream.is_open()){
       string tmp;
       while(rnwStream.good() && !rnwStream.eof()){
           getline(rnwStream, tmp);
+          // stores only big enough strings
+          if(tmp.length() < 25){
+              continue;
+          }
           Runway* rnw = new Runway(tmp);
           runways.push_back(rnw);
       }
@@ -88,8 +95,11 @@ int main(int argc, char **argv)
     vector<Runway*> good_runways;
     // Insert your code here
     vector<Runway*>::iterator iter = find_if(runways.begin(), runways.end(), SiteNumber(a->site_number(), min_runway_length));
-    if(iter!=runways.end()){
+    while(iter != runways.end())
+    {
         good_runways.push_back(*iter);
+        // as after successful find_if, iter would point to the founded element, we have to increment it by 1 and pass the rest of vector to next call find_if
+        iter = find_if(++iter, runways.end(), SiteNumber(a->site_number(), min_runway_length));
     }
     // print this facility if it has long enough runways
     if ( !good_runways.empty() )
